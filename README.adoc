@@ -1,0 +1,220 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+= Error-Lang Playground
+:toc: left
+:toclevels: 3
+:icons: font
+:source-highlighter: highlight.js
+
+A teaching playground for Error-Lang — the programming language where code breaks intentionally.
+
+== Overview
+
+Error-Lang Playground provides a structured learning environment for Error-Lang, a teaching-first language designed to teach how compilers and interpreters work by making errors the curriculum.
+
+=== Philosophy
+
+[quote]
+Errors are features, not bugs. Every error has a lesson.
+
+Traditional programming focuses on avoiding errors. Error-Lang embraces them:
+
+* **Intentional error injection** in designated "gutter" blocks
+* **Stability score** that decreases with each error
+* **Curriculum-mapped error codes** (E0001-E0010+)
+* **Error-tolerant parsing** that continues after failures
+
+== Quick Start
+
+[source,bash]
+----
+# Clone the playground
+git clone https://github.com/hyperpolymath/error-lang-playground
+cd error-lang-playground
+
+# Setup (install ReScript)
+just setup
+
+# Build
+just build
+
+# Run your first level
+just run-hello
+
+# Or run any level
+just run levels/02-smart-quotes.err
+
+# Learn about an error code
+just explain E0007
+----
+
+== Levels
+
+The playground includes progressive learning levels:
+
+[cols="1,3,2"]
+|===
+| Level | Topic | Error Codes
+
+| 01 | Hello World | (none)
+| 02 | Smart Quotes | E0007
+| 03 | Unterminated Strings | E0002
+| 04 | Escape Sequences | E0003
+| 05 | Missing Block Terminators | E0005
+| 06 | Unmatched Parentheses | E0006
+| 07 | Illegal Characters | E0004
+| 08 | Variables and Types | (none)
+| 09 | Operators | (none)
+| 10 | Gutter Mastery | (all)
+|===
+
+Run `just levels` to see all available levels.
+
+== Error Codes
+
+=== Syntax Errors (E0001-E0010)
+
+[cols="1,3"]
+|===
+| Code | Description
+
+| E0001 | Unexpected token
+| E0002 | Unterminated string literal
+| E0003 | Invalid escape sequence
+| E0004 | Illegal character
+| E0005 | Missing 'end' keyword
+| E0006 | Unmatched parenthesis
+| E0007 | Smart quote detected
+| E0008 | Invalid identifier
+| E0009 | Reserved keyword misuse
+| E0010 | Whitespace issue
+|===
+
+Use `just explain <code>` for detailed explanations.
+
+== The Gutter Block
+
+The `gutter` block is Error-Lang's signature feature:
+
+[source]
+----
+main
+    println("This always works")
+
+    gutter
+        # Errors may be injected here
+        let broken = "unterminated
+    end
+
+    println("This still runs!")
+end
+----
+
+=== How It Works
+
+1. Code inside `gutter...end` is an "error zone"
+2. The compiler may inject random errors (based on seed)
+3. Each error decreases the Stability Score
+4. The compiler recovers and continues after `end`
+
+=== Stability Score
+
+[cols="1,2"]
+|===
+| Score | Status
+
+| 100% | Rock solid
+| 70%+ | Stable
+| 50%+ | Wobbly
+| 30%+ | Unstable
+| <10% | Critical
+| 0% | Collapsed
+|===
+
+== Project Structure
+
+[source]
+----
+error-lang-playground/
+├── compiler/
+│   └── src/
+│       ├── lexer/       # Tokenization
+│       ├── parser/      # Syntax analysis
+│       ├── types/       # Type definitions
+│       └── errors/      # Error injection system
+├── cli/
+│   └── main.js          # Deno CLI entry point
+├── levels/              # Learning levels (*.err)
+├── examples/            # Additional examples
+├── docs/                # Documentation
+├── tests/               # Test suite
+├── rescript.json        # ReScript config
+├── deno.json            # Deno config
+└── justfile             # Task runner
+----
+
+== CLI Commands
+
+[source,bash]
+----
+# Run a program
+error-lang run <file.err>
+
+# Explain an error code
+error-lang explain E0002
+
+# List levels
+error-lang levels
+
+# Check environment
+error-lang doctor
+
+# Show help
+error-lang help
+----
+
+== Development
+
+=== Prerequisites
+
+* Deno 1.40+
+* Node.js 18+ (for ReScript compiler)
+* just (task runner)
+
+=== Building
+
+[source,bash]
+----
+just build        # Build everything
+just build-watch  # Watch mode
+just clean        # Remove artifacts
+----
+
+=== Testing
+
+[source,bash]
+----
+just test         # Run tests
+just test-watch   # Watch mode
+just check        # Full lint/format/type check
+----
+
+== Technology Stack
+
+* **Compiler**: ReScript (compiles to JavaScript)
+* **CLI**: Deno (TypeScript-free, Node-free runtime)
+* **Documentation**: AsciiDoc
+* **Task Runner**: just
+
+This follows the link:https://github.com/hyperpolymath/rhodium-standard-repositories[Rhodium Standard Repositories] language policy.
+
+== Related Projects
+
+* link:https://github.com/hyperpolymath/error-lang[error-lang] - The Error-Lang language specification and core implementation
+
+== License
+
+AGPL-3.0-or-later
+
+== Contributing
+
+See link:CONTRIBUTING.adoc[CONTRIBUTING.adoc] for guidelines.

@@ -1,0 +1,14 @@
+# Level 01: Hello World
+# Your first Error-Lang program
+# Learning: Basic program structure (main block, print, end)
+
+main
+    println("Hello, Error-Lang!")
+    println("Welcome to the playground where errors teach you.")
+end
+
+# Try modifying the code above!
+# What happens if you:
+# - Remove the 'end' keyword?
+# - Forget to close a quote?
+# - Use smart quotes instead of straight quotes?

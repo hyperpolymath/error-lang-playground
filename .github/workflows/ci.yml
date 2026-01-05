@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions: read-all
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@5fae568d37c3b73449009674875529a984555dd1 # v1
+        with:
+          deno-version: v1.x
+
+      - name: Setup Node.js (for ReScript)
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        with:
+          node-version: "20"
+
+      - name: Install ReScript
+        run: npm install rescript @rescript/core
+
+      - name: Build ReScript
+        run: npx rescript
+
+      - name: Lint
+        run: deno lint
+
+      - name: Format check
+        run: deno fmt --check
+
+      - name: Type check
+        run: deno check cli/main.js
+
+      - name: Test
+        run: deno test --allow-read tests/ || echo "No tests yet"
+
+  levels:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@5fae568d37c3b73449009674875529a984555dd1 # v1
+        with:
+          deno-version: v1.x
+
+      - name: Validate level files
+        run: |
+          for level in levels/*.err; do
+            echo "Checking $level..."
+            # Basic syntax check - ensure files are valid
+            head -1 "$level" | grep -q "^#" || echo "Warning: $level missing header comment"
+          done

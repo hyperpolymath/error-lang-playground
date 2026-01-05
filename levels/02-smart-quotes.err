@@ -1,0 +1,26 @@
+# Level 02: Smart Quotes (E0007)
+# Learning: ASCII vs Unicode in source code
+# This level teaches why "curly" quotes break code
+
+main
+    # This works - straight quotes
+    println("Hello with straight quotes!")
+
+    gutter
+        # This will fail - smart quotes from copy-paste
+        let msg = "Hello with smart quotes"
+        println(msg)
+    end
+
+    println("Level 02 complete!")
+end
+
+# LESSON: Smart quotes (" ") look similar but are different characters.
+# Compilers expect ASCII straight quotes (").
+# This error often happens when copying from:
+# - Word processors (Word, Google Docs)
+# - Websites with fancy typography
+# - Text messages or emails
+#
+# Fix: Replace curly quotes with straight quotes.
+# Most code editors have a "replace all" feature.

@@ -1,0 +1,32 @@
+# ReScript
+*.res.js
+lib/
+.bsb.lock
+.merlin
+
+# Deno
+.deno/
+
+# Node (ReScript compiler only)
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local

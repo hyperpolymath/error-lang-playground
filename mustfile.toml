@@ -1,0 +1,133 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# mustfile.toml - Configuration for Must
+# Task runner + template engine + enforcer
+# See: https://github.com/hyperpolymath/mustfile
+
+schema = "0.1"
+
+[project]
+name = "error-lang-playground"
+version = "0.1.0"
+license = "AGPL-3.0-or-later"
+author = "Jonathan D.A. Jewell"
+description = "Teaching playground for Error-Lang - learn compilers by breaking code"
+
+[variables]
+copyright = "Copyright (C) 2025 Jonathan D.A. Jewell"
+license = "AGPL-3.0-or-later"
+registry = "ghcr.io/hyperpolymath"
+
+# Task definitions (delegate to just)
+[tasks]
+
+[tasks.build]
+description = "Build ReScript compiler and check CLI"
+commands = ["just build"]
+
+[tasks.build-watch]
+description = "Build in watch mode"
+commands = ["just build-watch"]
+
+[tasks.test]
+description = "Run test suite"
+dependencies = ["build"]
+commands = ["just test"]
+
+[tasks.clean]
+description = "Clean build artifacts"
+commands = ["just clean"]
+
+[tasks.run]
+description = "Run an Error-Lang file"
+commands = ["just run"]
+
+[tasks.lint]
+description = "Lint code with deno lint"
+commands = ["just lint"]
+
+[tasks.fmt]
+description = "Format code"
+commands = ["just fmt"]
+
+[tasks.check]
+description = "Run all checks (lint, format, types)"
+commands = ["just check"]
+
+[tasks.doctor]
+description = "Check environment setup"
+commands = ["just doctor"]
+
+[tasks.levels]
+description = "List available learning levels"
+commands = ["just levels"]
+
+[tasks.explain]
+description = "Explain an error code"
+commands = ["just explain"]
+
+# Requirements enforcement - Physical State contract
+[requirements]
+must_have = [
+    "LICENSE",
+    "README.adoc",
+    "SECURITY.md",
+    "justfile",
+    "Mustfile",
+    "mustfile.toml",
+    "config.ncl",
+    "deno.json",
+    "rescript.json",
+    "cli/main.js",
+    "compiler/src/lexer/Lexer.res",
+    "compiler/src/parser/Parser.res",
+    "compiler/src/types/Types.res",
+    "levels/01-hello-world.err",
+]
+
+must_not_have = [
+    "Makefile",
+    "Dockerfile",
+    ".env",
+    "package-lock.json",
+    "yarn.lock",
+    "bun.lockb",
+    "tsconfig.json",
+]
+
+# Content requirements
+[requirements.content]
+"LICENSE" = ["AGPL", "Version 3"]
+"compiler/src/lexer/Lexer.res" = ["SPDX-License-Identifier: AGPL-3.0-or-later"]
+"cli/main.js" = ["SPDX-License-Identifier: AGPL-3.0-or-later"]
+
+# Templates for generating new levels
+[templates]
+
+[templates.level]
+source = "templates/level.err.mustache"
+destination = "levels/{{level_number}}-{{level_name}}.err"
+description = "Generate new Error-Lang learning level"
+
+[templates.error_code]
+source = "templates/error-code.res.mustache"
+destination = "compiler/src/errors/{{error_code}}.res"
+description = "Generate error code handler"
+
+# Enforcement rules
+[enforcement]
+license = "AGPL-3.0-or-later"
+copyright_holder = "Jonathan D.A. Jewell"
+podman_not_docker = true
+gitlab_not_github = false
+
+[enforcement.checks]
+no_trailing_whitespace = true
+no_tabs = false
+unix_line_endings = true
+max_line_length = 120
+
+# Deployment configuration
+[deploy]
+containerfile = "Containerfile"
+registry = "ghcr.io/hyperpolymath"
+default_tag = "latest"
